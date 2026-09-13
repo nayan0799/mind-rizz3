@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "name": "total ranking",
+      "passed": true
+    },
+    {
+      "name": "level 3 tie break",
+      "passed": true
+    },
+    {
+      "name": "configured tie break",
+      "passed": true
+    },
+    {
+      "name": "shared competition ranks",
+      "passed": true
+    },
+    {
+      "name": "manual tie order",
+      "passed": true
+    },
+    {
+      "name": "disqualified exclusion",
+      "passed": true
+    },
+    {
+      "name": "missing scores",
+      "passed": true
+    },
+    {
+      "name": "persisted active timer",
+      "passed": true
+    },
+    {
+      "name": "paused timer",
+      "passed": true
+    },
+    {
+      "name": "nonnegative timer",
+      "passed": true
+    },
+    {
+      "name": "CSV quote escaping",
+      "passed": true
+    },
+    {
+      "name": "CSV formula mitigation",
+      "passed": true
+    },
+    {
+      "name": "all relative imports resolve",
+      "passed": true
+    },
+    {
+      "name": "exactly three seeded levels",
+      "passed": true
+    },
+    {
+      "name": "seed and frontend configuration match",
+      "passed": true
+    }
+  ],
+  "notes": [
+    "Core logic executed in JavaScript.",
+    "Source relative-import targets checked.",
+    "Next.js build/typecheck and live Supabase migration must be run after dependency installation."
+  ]
+}

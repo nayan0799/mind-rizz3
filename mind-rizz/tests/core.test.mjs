@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {rankTeams,remaining,csv} from '../lib/ranking-core.mjs';
+const team=(id,scores,other={})=>({id,code:id,name:id,scores,status:'confirmed',tie_order:null,...other});
+test('total score descending',()=>assert.equal(rankTeams([team('a',[50,50,50]),team('b',[60,60,60])],[3,2,1])[0].id,'b'));
+test('level 3 breaks equal totals',()=>assert.equal(rankTeams([team('a',[90,90,80]),team('b',[80,90,90])],[3,2,1])[0].id,'b'));
+test('configured level priority',()=>assert.equal(rankTeams([team('a',[90,90,80]),team('b',[80,90,90])],[1,2,3])[0].id,'a'));
+test('unresolved ties share competition rank',()=>assert.deepEqual(rankTeams([team('a',[90,90,90]),team('b',[90,90,90]),team('c',[70,70,70])],[3,2,1]).map(t=>t.rank),[1,1,3]));
+test('manual tie order resolves exact ties',()=>assert.equal(rankTeams([team('a',[90,90,90],{tie_order:2}),team('b',[90,90,90],{tie_order:1})],[3,2,1])[0].id,'b'));
+test('disqualified teams excluded',()=>assert.equal(rankTeams([team('a',[100,100,100],{status:'disqualified'})],[3,2,1]).length,0));
+test('missing scores produce zero totals without modifying source',()=>{const t=team('a',[null,null,null]);assert.equal(rankTeams([t],[3,2,1])[0].total,0);assert.deepEqual(t.scores,[null,null,null]);});
+test('active timer survives refresh',()=>assert.equal(remaining({status:'active',remaining:60,started_at:'2026-10-25T10:00:00Z'},Date.parse('2026-10-25T10:00:15Z')),45));
+test('paused timer freezes',()=>assert.equal(remaining({status:'paused',remaining:45,started_at:null},Date.now()),45));
+test('timer never negative',()=>assert.equal(remaining({status:'active',remaining:5,started_at:'2026-10-25T10:00:00Z'},Date.parse('2026-10-25T10:01:00Z')),0));
+test('CSV quotes commas and embedded quotes',()=>assert.ok(csv([{team:'A, "B"'}]).includes('"A, ""B"""')));
+test('CSV neutralizes formula prefixes',()=>assert.ok(csv([{name:'=1+1'}]).includes("'=1+1")));

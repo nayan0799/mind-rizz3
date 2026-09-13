@@ -1,0 +1,2993 @@
+Absolutely. Below is the **complete end-to-end workflow for MIND RIZZ**, including the **student website, student account, team registration, QR pass, event-day operation, levels, scoring, automatic ranking, results, and the complete admin panel/CMS**.
+
+# 🧠 MIND RIZZ — COMPLETE SYSTEM WORKFLOW
+
+**Event:** MIND RIZZ
+**Tagline:** THINK • PLAY • CONQUER
+**Mode:** Offline
+**Team size:** Exactly **2 members**
+**Theme:** Dark + White
+**Stack:** Next.js + TypeScript + Supabase + Vercel
+
+---
+
+# 1. SYSTEM OVERVIEW
+
+The complete system works like this:
+
+```text
+                    ┌─────────────────────┐
+                    │   PUBLIC WEBSITE    │
+                    │    MIND RIZZ        │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┴────────────────┐
+              │                                 │
+              ▼                                 ▼
+      ┌───────────────┐                 ┌───────────────┐
+      │ Student Login │                 │ Admin Login   │
+      └───────┬───────┘                 └───────┬───────┘
+              │                                 │
+              ▼                                 ▼
+      ┌───────────────┐                 ┌───────────────┐
+      │ Student Panel │                 │ Admin Panel   │
+      └───────┬───────┘                 └───────┬───────┘
+              │                                 │
+              ▼                                 ▼
+      ┌───────────────┐                 ┌───────────────┐
+      │ Create Team   │                 │ Manage Teams  │
+      │ 2 Members     │                 │ QR Check-in   │
+      └───────┬───────┘                 │ Levels        │
+              │                         │ Scores        │
+              ▼                         │ Results       │
+      ┌───────────────┐                 │ Website CMS   │
+      │ Team ID + QR  │                 └───────┬───────┘
+      └───────┬───────┘                         │
+              │                                 │
+              └──────────────┬──────────────────┘
+                             ▼
+                    ┌──────────────────┐
+                    │ EVENT DAY        │
+                    │ Check-in         │
+                    │ Level 1          │
+                    │ Level 2          │
+                    │ Level 3          │
+                    └────────┬─────────┘
+                             ▼
+                    ┌──────────────────┐
+                    │ AUTO CALCULATION │
+                    │ TOTAL SCORE      │
+                    │ RANKING          │
+                    └────────┬─────────┘
+                             ▼
+                    ┌──────────────────┐
+                    │ RESULTS          │
+                    │ 1st / 2nd / 3rd │
+                    └──────────────────┘
+```
+
+---
+
+# 2. PUBLIC WEBSITE WORKFLOW
+
+The homepage is **one long scrolling page**.
+
+```text
+Navbar
+ ↓
+Hero
+ ↓
+About
+ ↓
+Why Participate
+ ↓
+Three Levels
+ ↓
+How It Works
+ ↓
+Rules
+ ↓
+Registration CTA
+ ↓
+Announcements
+ ↓
+Results
+ ↓
+Footer
+```
+
+No separate public Gallery.
+
+No public Contact section.
+
+---
+
+# 3. NAVBAR
+
+Default:
+
+```text
+🧠 MIND RIZZ
+
+Home   About   Levels   Rules                         Login
+```
+
+Clicking:
+
+### Home
+
+Scrolls to top.
+
+### About
+
+Scrolls to About.
+
+### Levels
+
+Scrolls to Levels.
+
+### Rules
+
+Scrolls to Rules.
+
+### Login
+
+Goes to:
+
+```text
+/student/login
+```
+
+There is **no Admin Login button** in the public navbar.
+
+Admin login is:
+
+```text
+/admin/login
+```
+
+---
+
+# 4. HERO SECTION
+
+Example:
+
+```text
+MIND RIZZ
+
+THINK • PLAY • CONQUER
+
+COLLEGE TECH FEST 2026
+
+An exciting offline mind-challenge competition where
+logic, speed, creativity and problem-solving come together.
+
+EVENT STARTS IN
+
+25 DAYS   12 HOURS   35 MIN   42 SEC
+
+[ REGISTER NOW ]    [ EXPLORE EVENT ]
+```
+
+Everything should come from Admin Settings.
+
+Admin can change:
+
+```text
+Logo
+Logo name
+Event name
+Tagline
+College name
+Description
+Countdown date
+Countdown time
+Register button
+Explore button
+Hero image
+```
+
+So the developer never needs to edit the homepage code for normal event changes.
+
+---
+
+# 5. COUNTDOWN SYSTEM
+
+Admin sets:
+
+```text
+Event Date:
+25 October 2026
+
+Event Time:
+10:00 AM
+```
+
+Website automatically calculates:
+
+```text
+25 DAYS
+12 HOURS
+35 MINUTES
+42 SECONDS
+```
+
+When countdown reaches zero:
+
+```text
+EVENT IS LIVE
+```
+
+Admin can choose what happens after countdown:
+
+```text
+○ EVENT IS LIVE
+
+○ HIDE COUNTDOWN
+
+○ EVENT COMPLETED
+```
+
+---
+
+# 6. ABOUT SECTION
+
+Example:
+
+### What is Mind Rizz?
+
+> Mind Rizz is an offline technical and intellectual challenge designed to test logical thinking, decision-making, problem-solving ability, speed and presence of mind.
+
+Then:
+
+### Objectives
+
+```text
+🧠 Develop logical thinking
+💡 Encourage problem solving
+🎯 Test decision making
+🤝 Improve teamwork
+⚡ Perform under pressure
+🏆 Encourage competition
+```
+
+Admin can:
+
+```text
+Add objective
+Edit objective
+Delete objective
+Change order
+Hide objective
+Show objective
+```
+
+---
+
+# 7. WHY PARTICIPATE
+
+Default:
+
+```text
+🧠 THINK
+Test your logical skills
+
+⚡ CHALLENGE
+Challenge your limits
+
+🏆 WIN
+Compete for exciting prizes
+
+🎯 STRATEGY
+Make smart decisions
+
+⏱ SPEED
+Perform under time pressure
+
+🤝 EXPERIENCE
+Learn and enjoy the event
+```
+
+Admin can completely manage these cards.
+
+For each card:
+
+```text
+Icon
+Title
+Description
+Order
+Visible
+```
+
+---
+
+# 8. THREE LEVELS
+
+Default:
+
+### LEVEL 1 — Puzzle Rush
+
+```text
+Time: 15 minutes
+Maximum Score: 100
+Difficulty: Easy
+```
+
+### LEVEL 2 — Logic Battle
+
+```text
+Time: 20 minutes
+Maximum Score: 100
+Difficulty: Medium
+```
+
+### LEVEL 3 — Mind Master
+
+```text
+Time: 25 minutes
+Maximum Score: 100
+Difficulty: Hard
+```
+
+Each level has:
+
+```text
+Name
+Short description
+Full description
+Instructions
+Rules
+Time limit
+Maximum score
+Difficulty
+Status
+Order
+Visibility
+```
+
+---
+
+# 9. LEVEL DETAILS
+
+Student clicks:
+
+```text
+VIEW DETAILS
+```
+
+Modal/page:
+
+```text
+LEVEL 1
+
+PUZZLE RUSH
+
+Description:
+Solve the given logical challenges as quickly
+and accurately as possible.
+
+Time Limit:
+15 Minutes
+
+Maximum Score:
+100
+
+Instructions:
+1. Read each question carefully.
+2. Submit answers before time expires.
+3. No outside assistance allowed.
+
+Rules:
+...
+```
+
+---
+
+# 10. HOW IT WORKS
+
+Public display:
+
+```text
+REGISTER
+   ↓
+CHECK-IN
+   ↓
+LEVEL 1
+   ↓
+LEVEL 2
+   ↓
+LEVEL 3
+   ↓
+FINAL SCORE
+   ↓
+RESULTS
+   ↓
+WINNERS
+```
+
+Admin can change the steps.
+
+---
+
+# 11. RULES
+
+Rules are divided into categories.
+
+```text
+Eligibility
+General Rules
+Team Rules
+Level 1 Rules
+Level 2 Rules
+Level 3 Rules
+Scoring
+Disqualification
+Winner Selection
+```
+
+Example:
+
+### Eligibility
+
+```text
+• Eligible college students
+• Valid student information required
+• Registration before deadline
+```
+
+### Team Rules
+
+```text
+• Each team must contain exactly 2 members
+• Team members cannot be changed after confirmation
+  without admin approval
+```
+
+### Disqualification
+
+```text
+• Cheating
+• Unauthorized assistance
+• Misconduct
+• Rule violation
+• Failure to follow organizer instructions
+```
+
+---
+
+# 12. REGISTRATION BUTTON
+
+Student clicks:
+
+```text
+REGISTER NOW
+```
+
+If not logged in:
+
+```text
+You need a student account.
+
+[ LOGIN ]
+[ CREATE ACCOUNT ]
+```
+
+If logged in but no team:
+
+```text
+Create Your Team
+```
+
+If already registered:
+
+```text
+Your team is already registered.
+
+[ GO TO DASHBOARD ]
+```
+
+If registration closed:
+
+```text
+Registration is currently closed.
+```
+
+---
+
+# 13. STUDENT SIGNUP
+
+Route:
+
+```text
+/student/signup
+```
+
+Form:
+
+```text
+Full Name
+Email
+Password
+Confirm Password
+
+[ CREATE ACCOUNT ]
+```
+
+Supabase Auth creates the account.
+
+If email verification is enabled:
+
+```text
+Check your email to verify your account.
+```
+
+After verification:
+
+```text
+LOGIN
+ ↓
+STUDENT DASHBOARD
+```
+
+---
+
+# 14. STUDENT LOGIN
+
+Route:
+
+```text
+/student/login
+```
+
+Form:
+
+```text
+Email
+Password
+
+[ LOGIN ]
+
+Forgot Password?
+Create Account
+```
+
+After login:
+
+```text
+/student/dashboard
+```
+
+---
+
+# 15. STUDENT DASHBOARD
+
+Dashboard:
+
+```text
+Welcome, Rahul 👋
+
+MIND RIZZ
+Event starts in:
+
+25 DAYS 12 HOURS
+```
+
+Then:
+
+```text
+MY TEAM
+
+Team Name:
+Brain Stormers
+
+Team ID:
+MR-2026-T001
+
+Members:
+2 / 2
+
+Registration:
+CONFIRMED
+
+Check-in:
+NOT CHECKED IN
+```
+
+---
+
+# 16. CREATE TEAM
+
+Student clicks:
+
+```text
+CREATE TEAM
+```
+
+Form:
+
+```text
+Team Name
+```
+
+Logged-in student automatically becomes:
+
+```text
+Member 1
+TEAM LEADER
+```
+
+Example:
+
+```text
+Member 1
+
+Name:
+Rahul Das
+
+Email:
+rahul@example.com
+
+Role:
+Team Leader
+```
+
+---
+
+# 17. ADD MEMBER 2
+
+Student enters:
+
+```text
+Member 2
+
+Name
+Email
+College ID
+College
+Department / Branch
+Semester
+Phone
+```
+
+System validates:
+
+```text
+Member 1 ✓
+Member 2 ✓
+
+Team Size: 2 / 2
+```
+
+The system must **not allow**:
+
+```text
+1 member ❌
+3 members ❌
+```
+
+Exactly:
+
+```text
+2 members
+```
+
+---
+
+# 18. TEAM CONFIRMATION
+
+Before submitting:
+
+```text
+TEAM REGISTRATION
+
+Team Name:
+Brain Stormers
+
+Member 1 — Leader
+Rahul Das
+
+Member 2
+Amit Das
+
+Team Size:
+2 / 2
+
+☑ I agree to the event rules.
+
+[ SUBMIT TEAM ]
+```
+
+---
+
+# 19. BACKEND VALIDATION
+
+When Submit Team is clicked:
+
+System checks:
+
+```text
+✓ User authenticated
+✓ Registration open
+✓ Deadline not passed
+✓ Capacity available
+✓ Team does not already exist
+✓ Exactly 2 members
+✓ Member information valid
+✓ Team name valid
+✓ Rules accepted
+```
+
+If everything is valid:
+
+```text
+CREATE TEAM
+```
+
+---
+
+# 20. TEAM ID GENERATION
+
+System automatically generates:
+
+```text
+MR-2026-T001
+```
+
+Next:
+
+```text
+MR-2026-T002
+MR-2026-T003
+MR-2026-T004
+```
+
+The student never manually chooses the Team ID.
+
+---
+
+# 21. QR TEAM PASS
+
+After successful registration:
+
+```text
+REGISTRATION SUCCESSFUL 🎉
+
+Team:
+Brain Stormers
+
+Team ID:
+MR-2026-T001
+
+Status:
+CONFIRMED
+```
+
+Then:
+
+```text
+┌─────────────────────────────┐
+│       🧠 MIND RIZZ          │
+│                             │
+│     BRAIN STORMERS          │
+│                             │
+│     MR-2026-T001            │
+│                             │
+│        █████████            │
+│        ██ QR ██             │
+│        █████████            │
+│                             │
+│ Rahul Das                   │
+│ Amit Das                    │
+│                             │
+│       CONFIRMED             │
+└─────────────────────────────┘
+```
+
+QR represents the **team**.
+
+---
+
+# 22. STUDENT DASHBOARD AFTER REGISTRATION
+
+Dashboard now shows:
+
+```text
+MY TEAM
+
+Brain Stormers
+MR-2026-T001
+
+Members
+Rahul Das — Leader
+Amit Das — Member
+
+Registration
+CONFIRMED
+
+Check-in
+NOT CHECKED IN
+```
+
+And:
+
+```text
+LEVEL PROGRESS
+
+Level 1
+Upcoming
+
+Level 2
+Upcoming
+
+Level 3
+Upcoming
+```
+
+---
+
+# 23. STUDENT ANNOUNCEMENTS
+
+Dashboard:
+
+```text
+ANNOUNCEMENTS
+
+Registration is now open
+12 Sep 2026
+
+Participants should report before event
+20 Oct 2026
+
+Level instructions will be provided at venue
+```
+
+Admin controls these announcements.
+
+---
+
+# 24. STUDENT RESULT
+
+Before results:
+
+```text
+RESULTS
+
+Results have not been published yet.
+```
+
+After publishing:
+
+```text
+YOUR RESULT
+
+Team:
+Brain Stormers
+
+Level 1:
+85
+
+Level 2:
+92
+
+Level 3:
+88
+
+----------------
+
+TOTAL:
+265
+
+RANK:
+3
+
+POSITION:
+—
+```
+
+If winner:
+
+```text
+🏆 1ST PLACE
+```
+
+---
+
+# 25. STUDENT PERSONAL THEME
+
+This is separate from the public website design.
+
+Student opens:
+
+```text
+Dashboard
+ ↓
+Settings
+ ↓
+Appearance
+```
+
+Options:
+
+```text
+● Dark
+○ Light
+```
+
+or:
+
+```text
+○ Dark
+● Light
+```
+
+Example:
+
+```text
+Rahul → Dark
+Amit → Light
+Priya → Dark
+```
+
+Only that user's dashboard changes.
+
+It does **not** change:
+
+```text
+Public website
+Other students
+Admin panel
+Other users
+```
+
+---
+
+# 26. STUDENT SETTINGS
+
+Possible settings:
+
+```text
+Profile
+Appearance
+Password
+Account
+Logout
+```
+
+Profile:
+
+```text
+Name
+Email
+Phone
+College
+Department
+Semester
+```
+
+Appearance:
+
+```text
+Dark
+Light
+```
+
+---
+
+# 27. TEAM MEMBER CHANGE
+
+After registration, students cannot directly replace a member.
+
+They see:
+
+```text
+TEAM MEMBER CHANGE
+
+Current Member:
+Amit Das
+
+Requested Member:
+New Member Name
+
+Reason:
+...
+
+[ SEND REQUEST ]
+```
+
+Status:
+
+```text
+Pending
+```
+
+Admin receives request.
+
+Admin:
+
+```text
+APPROVE
+REJECT
+```
+
+If approved, database updates the member.
+
+---
+
+# 28. ADMIN LOGIN
+
+Separate URL:
+
+```text
+/admin/login
+```
+
+Example:
+
+```text
+🧠 MIND RIZZ ADMIN
+
+Email
+Password
+
+[ LOGIN ]
+```
+
+Admin authentication is checked server-side.
+
+A normal student cannot simply open:
+
+```text
+/admin
+```
+
+and access it.
+
+---
+
+# 29. ADMIN DASHBOARD
+
+After login:
+
+```text
+🧠 MIND RIZZ ADMIN
+
+Dashboard
+Website
+Design
+Event
+Teams
+Check-in
+Attendance
+Levels
+Scores
+Leaderboard
+Announcements
+Results
+Export Data
+```
+
+---
+
+# 30. ADMIN OVERVIEW
+
+Dashboard cards:
+
+```text
+TOTAL TEAMS
+120
+
+CONFIRMED
+115
+
+PENDING
+5
+
+CHECKED IN
+98
+
+NOT CHECKED IN
+17
+```
+
+Level status:
+
+```text
+LEVEL 1
+COMPLETED
+
+LEVEL 2
+ACTIVE
+
+LEVEL 3
+UPCOMING
+```
+
+Results:
+
+```text
+Results:
+NOT PUBLISHED
+```
+
+---
+
+# 31. ADMIN WEBSITE MANAGEMENT
+
+Menu:
+
+```text
+Website
+│
+├── Home
+├── About
+├── Why Participate
+├── How It Works
+└── Rules
+```
+
+This is the **CMS**.
+
+Admin can modify website content without touching code.
+
+---
+
+# 32. ADMIN → HOME
+
+Admin sees:
+
+```text
+HOME SETTINGS
+```
+
+### Navbar
+
+```text
+Logo
+Logo Name
+Home label
+About label
+Levels label
+Rules label
+Login button text
+```
+
+Admin can:
+
+```text
+Upload Logo
+Change Logo Name
+Change Menu Text
+Hide Menu Item
+Reorder Menu
+```
+
+---
+
+# 33. ADMIN → HERO
+
+Fields:
+
+```text
+Event Name
+Tagline
+College Name
+Description
+
+Register Button
+Explore Button
+
+Hero Image
+```
+
+Example:
+
+```text
+Event Name:
+MIND RIZZ
+
+Tagline:
+THINK • PLAY • CONQUER
+
+College:
+Tripura Institute of Technology
+```
+
+Save:
+
+```text
+[ SAVE CHANGES ]
+```
+
+Website updates automatically.
+
+---
+
+# 34. ADMIN → COUNTDOWN
+
+Admin:
+
+```text
+COUNTDOWN
+
+Enable:
+☑
+
+Event Date:
+25 October 2026
+
+Event Time:
+10:00 AM
+
+Timezone:
+Asia/Kolkata
+
+After Countdown:
+○ Event is Live
+○ Hide Countdown
+○ Event Completed
+```
+
+---
+
+# 35. ADMIN → ABOUT
+
+Admin can edit:
+
+```text
+Section Title
+Description
+Objectives
+Event Details
+```
+
+Objective editor:
+
+```text
++ Add Objective
+
+1. Develop logical thinking
+2. Encourage problem solving
+3. Test decision making
+4. Improve teamwork
+```
+
+Each has:
+
+```text
+Edit
+Delete
+Move Up
+Move Down
+Visibility
+```
+
+---
+
+# 36. ADMIN → WHY PARTICIPATE
+
+Admin sees cards:
+
+```text
+THINK
+CHALLENGE
+WIN
+STRATEGY
+SPEED
+EXPERIENCE
+```
+
+Can:
+
+```text
++ Add Card
+Edit
+Delete
+Reorder
+Hide
+Show
+```
+
+---
+
+# 37. ADMIN → HOW IT WORKS
+
+Admin can edit:
+
+```text
+Register
+Check-in
+Level 1
+Level 2
+Level 3
+Final Score
+Results
+Winners
+```
+
+Can add/remove/reorder steps.
+
+---
+
+# 38. ADMIN → RULES
+
+Admin sees:
+
+```text
+Eligibility
+General Rules
+Team Rules
+Level 1
+Level 2
+Level 3
+Scoring
+Disqualification
+Winner Selection
+```
+
+Each can be:
+
+```text
+Edit
+Delete
+Add
+Reorder
+Hide
+Show
+```
+
+---
+
+# 39. ADMIN → DESIGN
+
+```text
+Design
+│
+├── Colors
+├── Fonts
+├── Buttons
+└── Theme
+```
+
+---
+
+# 40. COLORS
+
+Admin controls:
+
+```text
+Primary Color
+Secondary Color
+Background
+Card
+Text
+Heading
+Border
+Button
+Button Text
+Hover
+```
+
+Default dark theme:
+
+```text
+Background: #0A0A0A
+Card:       #141414
+Text:       #FFFFFF
+Secondary:  #A3A3A3
+Border:     #2A2A2A
+Button:     #FFFFFF
+Button Text:#000000
+```
+
+---
+
+# 41. FONTS
+
+Admin:
+
+```text
+Heading Font
+Body Font
+```
+
+For example:
+
+```text
+Inter
+Poppins
+Montserrat
+Roboto
+```
+
+---
+
+# 42. BUTTON SETTINGS
+
+Admin:
+
+```text
+Button Style
+Border Radius
+Hover Effect
+Size
+```
+
+Example:
+
+```text
+Style:
+Solid
+
+Radius:
+8px
+
+Hover:
+Scale
+```
+
+---
+
+# 43. GLOBAL WEBSITE THEME
+
+Admin:
+
+```text
+Default Website Theme
+
+● Dark
+○ Light
+```
+
+This controls the **official public website**.
+
+It is separate from student personal theme.
+
+---
+
+# 44. ADMIN → EVENT SETTINGS
+
+This is one of the most important sections.
+
+```text
+EVENT SETTINGS
+```
+
+Fields:
+
+```text
+Event Name
+College Name
+Edition
+Description
+
+Event Date
+Event Time
+Venue
+
+Participation
+Mode
+Registration Mode
+
+Logo
+Favicon
+Hero Image
+Banner
+
+Browser Title
+```
+
+---
+
+# 45. EVENT SCHEDULE
+
+Admin controls:
+
+```text
+Event Start
+Check-in Opens
+Check-in Closes
+
+Level 1 Start
+Level 2 Start
+Level 3 Start
+
+Results Time
+```
+
+Example:
+
+```text
+Check-in:
+09:00 AM
+
+Check-in closes:
+09:45 AM
+
+Level 1:
+10:00 AM
+
+Level 2:
+11:00 AM
+
+Level 3:
+12:00 PM
+
+Results:
+03:00 PM
+```
+
+---
+
+# 46. REGISTRATION SETTINGS
+
+Admin:
+
+```text
+Registration:
+OPEN
+
+Opening Date:
+01 Oct 2026
+
+Deadline:
+20 Oct 2026
+
+Maximum Teams:
+100
+```
+
+System automatically shows:
+
+```text
+Registered:
+72
+
+Remaining:
+28
+```
+
+When capacity reaches 100:
+
+```text
+REGISTRATION CLOSED
+```
+
+Option:
+
+```text
+☑ Automatically close at capacity
+☑ Automatically close at deadline
+```
+
+Team size:
+
+```text
+EXACTLY 2 MEMBERS
+```
+
+This should be fixed to 2 because it is a core event rule.
+
+---
+
+# 47. ADMIN → TEAMS
+
+```text
+TEAMS
+
+Search:
+[ MR-2026-T001             ]
+
+Filter:
+Status
+Check-in
+College
+Department
+```
+
+Table:
+
+| Team ID      | Team           | Members | Status    | Check-in |
+| ------------ | -------------- | ------: | --------- | -------- |
+| MR-2026-T001 | Brain Stormers |       2 | Confirmed | Yes      |
+| MR-2026-T002 | Mind Warriors  |       2 | Confirmed | No       |
+
+---
+
+# 48. TEAM DETAILS
+
+Admin clicks a team.
+
+Shows:
+
+```text
+TEAM
+
+Brain Stormers
+
+Team ID:
+MR-2026-T001
+
+Status:
+Confirmed
+
+Member 1:
+Rahul Das
+Leader
+
+Member 2:
+Amit Das
+Member
+```
+
+Also:
+
+```text
+Registration Time
+Check-in
+Level Scores
+Total Score
+Rank
+Change Requests
+```
+
+---
+
+# 49. ADMIN → CHANGE REQUESTS
+
+Admin sees:
+
+```text
+CHANGE REQUESTS
+
+Team:
+Brain Stormers
+
+Current Member:
+Amit Das
+
+Requested Member:
+Rohan Das
+
+Reason:
+Original member unavailable
+
+Status:
+PENDING
+
+[ APPROVE ]
+[ REJECT ]
+```
+
+---
+
+# 50. ADMIN → CHECK-IN
+
+Admin opens:
+
+```text
+QR SCANNER
+```
+
+Camera scans team QR.
+
+System finds:
+
+```text
+MR-2026-T001
+
+Brain Stormers
+
+Rahul Das
+Amit Das
+
+Registration:
+Confirmed
+```
+
+Admin verifies team.
+
+Then:
+
+```text
+[ CHECK IN TEAM ]
+```
+
+---
+
+# 51. CHECK-IN RESULT
+
+After check-in:
+
+```text
+✓ TEAM CHECKED IN
+
+Team:
+Brain Stormers
+
+Time:
+09:21 AM
+
+Status:
+CHECKED IN
+```
+
+Database stores:
+
+```text
+team_id
+checked_in
+checked_in_at
+checked_in_by
+```
+
+---
+
+# 52. ADMIN → ATTENDANCE
+
+Dashboard:
+
+```text
+ATTENDANCE
+
+Registered:
+100
+
+Checked In:
+84
+
+Not Checked In:
+16
+```
+
+Filters:
+
+```text
+All
+Checked In
+Not Checked In
+```
+
+---
+
+# 53. EVENT DAY — LEVEL 1
+
+Admin opens:
+
+```text
+LEVELS
+ ↓
+LEVEL 1
+```
+
+Status:
+
+```text
+UPCOMING
+```
+
+Admin presses:
+
+```text
+[ START LEVEL ]
+```
+
+System changes:
+
+```text
+UPCOMING
+ ↓
+ACTIVE
+```
+
+Timer:
+
+```text
+14:59
+```
+
+---
+
+# 54. LEVEL 1 ACTIVE
+
+Admin sees:
+
+```text
+LEVEL 1 — PUZZLE RUSH
+
+LIVE
+
+14:32
+
+Teams Checked In:
+84
+
+[ PAUSE ]
+[ END LEVEL ]
+```
+
+The actual questions/challenges can remain offline.
+
+Website manages:
+
+```text
+Level status
+Timer
+Start time
+End time
+```
+
+---
+
+# 55. PAUSE LEVEL
+
+If required:
+
+```text
+[ PAUSE ]
+```
+
+Status:
+
+```text
+PAUSED
+```
+
+Timer stops.
+
+Admin can:
+
+```text
+[ RESUME ]
+```
+
+---
+
+# 56. END LEVEL
+
+Admin:
+
+```text
+[ END LEVEL ]
+```
+
+System:
+
+```text
+ACTIVE
+ ↓
+COMPLETED
+```
+
+Level 1 is locked/completed.
+
+---
+
+# 57. LEVEL 2
+
+Same process:
+
+```text
+LEVEL 2
+ ↓
+START
+ ↓
+ACTIVE
+ ↓
+TIMER
+ ↓
+PAUSE / RESUME
+ ↓
+END
+ ↓
+COMPLETED
+```
+
+---
+
+# 58. LEVEL 3
+
+Same:
+
+```text
+LEVEL 3
+ ↓
+START
+ ↓
+ACTIVE
+ ↓
+TIMER
+ ↓
+END
+ ↓
+COMPLETED
+```
+
+---
+
+# 59. SCORE ENTRY
+
+Admin opens:
+
+```text
+SCORES
+```
+
+Search:
+
+```text
+MR-2026-T001
+```
+
+Shows:
+
+```text
+Brain Stormers
+
+Level 1:
+[ 85 ] / 100
+
+Level 2:
+[ 92 ] / 100
+
+Level 3:
+[ 88 ] / 100
+
+-------------------
+
+TOTAL:
+265
+```
+
+Admin enters only individual level scores.
+
+---
+
+# 60. AUTOMATIC TOTAL
+
+System calculates:
+
+```text
+Level 1 = 85
+Level 2 = 92
+Level 3 = 88
+
+85 + 92 + 88
+
+= 265
+```
+
+Admin does **not** enter:
+
+```text
+Total = 265
+```
+
+The system calculates it.
+
+This prevents calculation mistakes.
+
+---
+
+# 61. SCORE VALIDATION
+
+If maximum is 100:
+
+```text
+Score:
+85 ✓
+```
+
+But:
+
+```text
+Score:
+110 ❌
+```
+
+System says:
+
+```text
+Score cannot exceed maximum score.
+```
+
+Also:
+
+```text
+-5 ❌
+```
+
+---
+
+# 62. LEADERBOARD
+
+After scores:
+
+```text
+LEADERBOARD
+
+1. Mind Warriors
+   280
+
+2. Logic Masters
+   272
+
+3. Brain Stormers
+   265
+
+4. Code Thinkers
+   258
+```
+
+Ranking is automatic.
+
+---
+
+# 63. TIE HANDLING
+
+If:
+
+```text
+Team A = 270
+Team B = 270
+```
+
+System needs a tie-break rule.
+
+Recommended configurable rule:
+
+```text
+1. Higher total score
+2. Higher Level 3 score
+3. Higher Level 2 score
+4. Higher Level 1 score
+5. If still tied → Admin resolves
+```
+
+Admin should be able to configure this later.
+
+---
+
+# 64. LEADERBOARD VISIBILITY
+
+Admin can choose:
+
+```text
+Leaderboard Visibility
+
+○ Hidden
+○ Admin Only
+○ Public
+○ After Results
+```
+
+Recommended during event:
+
+```text
+ADMIN ONLY
+```
+
+After results:
+
+```text
+PUBLIC
+```
+
+---
+
+# 65. ANNOUNCEMENT SYSTEM
+
+Admin opens:
+
+```text
+ANNOUNCEMENTS
+```
+
+Clicks:
+
+```text
++ NEW ANNOUNCEMENT
+```
+
+Fields:
+
+```text
+Title
+Message
+Publish Date
+Published
+Audience
+```
+
+Audience:
+
+```text
+Everyone
+Checked-in Teams
+Specific Team
+```
+
+Example:
+
+```text
+Title:
+Level 2 starts in 10 minutes
+
+Message:
+All checked-in teams should report to Hall A.
+
+Audience:
+Checked-in Teams
+```
+
+---
+
+# 66. PUBLIC ANNOUNCEMENTS
+
+Published announcements appear on:
+
+```text
+Public Homepage
+```
+
+and potentially:
+
+```text
+Student Dashboard
+```
+
+depending on audience.
+
+---
+
+# 67. RESULTS
+
+Admin opens:
+
+```text
+RESULTS
+```
+
+Before publishing:
+
+```text
+RESULTS NOT PUBLISHED
+```
+
+Admin reviews:
+
+```text
+Rank
+Team
+Level 1
+Level 2
+Level 3
+Total
+```
+
+---
+
+# 68. PUBLISH RESULTS
+
+Admin presses:
+
+```text
+[ PUBLISH RESULTS ]
+```
+
+System confirms:
+
+```text
+Are you sure?
+
+Results will become visible
+to students and the public.
+
+[ CANCEL ]
+[ PUBLISH ]
+```
+
+After confirmation:
+
+```text
+RESULTS:
+PUBLISHED
+```
+
+---
+
+# 69. PUBLIC RESULTS
+
+Website:
+
+```text
+🏆 MIND RIZZ RESULTS
+
+🥇 1st
+Mind Warriors
+280
+
+🥈 2nd
+Logic Masters
+272
+
+🥉 3rd
+Brain Stormers
+265
+```
+
+Then:
+
+```text
+FULL LEADERBOARD
+
+Rank | Team | Score
+1    | Mind Warriors | 280
+2    | Logic Masters | 272
+3    | Brain Stormers | 265
+...
+```
+
+---
+
+# 70. STUDENT RESULTS
+
+Student logs in:
+
+```text
+MY RESULT
+
+Team:
+Brain Stormers
+
+Level 1:
+85
+
+Level 2:
+92
+
+Level 3:
+88
+
+TOTAL:
+265
+
+RANK:
+3
+
+POSITION:
+3rd
+```
+
+---
+
+# 71. NO CERTIFICATES
+
+The system does **not** include:
+
+```text
+Certificate generation
+Certificate download
+Certificate verification
+```
+
+Only:
+
+```text
+Results
+Ranking
+Winner position
+```
+
+---
+
+# 72. EXPORT DATA
+
+Admin:
+
+```text
+EXPORT DATA
+```
+
+Options:
+
+```text
+Teams CSV
+Team Members CSV
+Attendance CSV
+Scores CSV
+Leaderboard CSV
+Results CSV
+```
+
+Example:
+
+```text
+[ EXPORT TEAMS ]
+[ EXPORT MEMBERS ]
+[ EXPORT ATTENDANCE ]
+[ EXPORT SCORES ]
+[ EXPORT LEADERBOARD ]
+[ EXPORT RESULTS ]
+```
+
+---
+
+# 73. DATABASE FLOW
+
+Main relationship:
+
+```text
+AUTH USER
+   │
+   ▼
+PROFILE
+   │
+   ▼
+TEAM
+   │
+   ├──────────────┐
+   ▼              ▼
+MEMBER 1       MEMBER 2
+   │
+   ▼
+ATTENDANCE
+   │
+   ▼
+LEVELS
+   │
+   ▼
+SCORES
+   │
+   ▼
+TOTAL
+   │
+   ▼
+RANKING
+   │
+   ▼
+RESULT
+```
+
+---
+
+# 74. MAIN DATABASE TABLES
+
+Use:
+
+```text
+profiles
+teams
+team_members
+events
+levels
+scores
+attendance
+announcements
+results
+theme_settings
+site_content
+team_change_requests
+activity_logs
+```
+
+---
+
+# 75. USER PROFILE
+
+```text
+profiles
+
+id
+user_id
+full_name
+email
+phone
+college_id
+college
+branch
+semester
+role
+theme_preference
+created_at
+updated_at
+```
+
+Role:
+
+```text
+student
+admin
+```
+
+Theme:
+
+```text
+dark
+light
+```
+
+---
+
+# 76. TEAMS TABLE
+
+```text
+teams
+
+id
+team_id
+event_id
+team_name
+leader_user_id
+status
+qr_token
+checked_in
+created_at
+updated_at
+```
+
+---
+
+# 77. TEAM MEMBERS
+
+```text
+team_members
+
+id
+team_id
+user_id
+full_name
+email
+phone
+college_id
+college
+branch
+semester
+role
+created_at
+```
+
+Role:
+
+```text
+leader
+member
+```
+
+---
+
+# 78. LEVELS TABLE
+
+```text
+levels
+
+id
+event_id
+level_number
+name
+short_description
+description
+instructions
+rules
+time_limit_seconds
+maximum_score
+status
+order_index
+visible
+created_at
+updated_at
+```
+
+Status:
+
+```text
+upcoming
+active
+paused
+completed
+```
+
+---
+
+# 79. SCORES TABLE
+
+```text
+scores
+
+id
+team_id
+level_id
+score
+entered_by
+entered_at
+updated_at
+```
+
+---
+
+# 80. ATTENDANCE TABLE
+
+```text
+attendance
+
+id
+team_id
+checked_in
+checked_in_at
+checked_in_by
+```
+
+---
+
+# 81. RESULTS TABLE
+
+```text
+results
+
+id
+team_id
+total_score
+rank
+winner_position
+published
+published_at
+```
+
+---
+
+# 82. SECURITY
+
+This is extremely important.
+
+### Student can:
+
+```text
+View own profile
+Edit own profile
+Create own team
+View own team
+View own results
+View allowed announcements
+Change own theme
+```
+
+### Student cannot:
+
+```text
+Edit scores
+Edit ranking
+Edit results
+Edit event settings
+Edit other teams
+Access admin panel
+Change other members without request
+```
+
+### Admin can:
+
+```text
+Manage event
+Manage website
+Manage teams
+Check in teams
+Manage levels
+Enter scores
+Publish results
+Manage announcements
+Export data
+```
+
+---
+
+# 83. RLS SECURITY
+
+Supabase Row Level Security should enforce the rules.
+
+For example:
+
+```text
+Student A
+```
+
+must not be able to query:
+
+```text
+Student B's private information
+```
+
+even by manually changing an ID in the browser.
+
+Admin permissions should be checked from trusted server-side logic/RLS, not merely by hiding buttons.
+
+---
+
+# 84. COMPLETE EVENT-DAY FLOW
+
+This is the actual real-world operation:
+
+```text
+09:00
+   ↓
+CHECK-IN OPENS
+
+Student arrives
+   ↓
+Shows QR Team Pass
+   ↓
+Admin scans QR
+   ↓
+Team found
+   ↓
+Member information displayed
+   ↓
+Admin verifies
+   ↓
+CHECK IN TEAM
+   ↓
+Team becomes Checked In
+   ↓
+09:45
+CHECK-IN CLOSES
+   ↓
+10:00
+LEVEL 1 STARTS
+   ↓
+15 MINUTES
+   ↓
+LEVEL 1 ENDS
+   ↓
+SCORES ENTERED
+   ↓
+LEVEL 2 STARTS
+   ↓
+20 MINUTES
+   ↓
+LEVEL 2 ENDS
+   ↓
+SCORES ENTERED
+   ↓
+LEVEL 3 STARTS
+   ↓
+25 MINUTES
+   ↓
+LEVEL 3 ENDS
+   ↓
+FINAL SCORES ENTERED
+   ↓
+TOTAL AUTOMATICALLY CALCULATED
+   ↓
+RANKING AUTOMATICALLY CALCULATED
+   ↓
+ADMIN REVIEWS
+   ↓
+PUBLISH RESULTS
+   ↓
+WINNERS SHOWN
+```
+
+---
+
+# 85. COMPLETE STUDENT JOURNEY
+
+```text
+PUBLIC WEBSITE
+      ↓
+REGISTER NOW
+      ↓
+CREATE ACCOUNT
+      ↓
+VERIFY EMAIL
+      ↓
+LOGIN
+      ↓
+CREATE TEAM
+      ↓
+ADD MEMBER 2
+      ↓
+CONFIRM 2/2
+      ↓
+AGREE RULES
+      ↓
+SUBMIT
+      ↓
+TEAM ID GENERATED
+      ↓
+QR PASS GENERATED
+      ↓
+STUDENT DASHBOARD
+      ↓
+EVENT DAY
+      ↓
+QR CHECK-IN
+      ↓
+LEVEL 1
+      ↓
+LEVEL 2
+      ↓
+LEVEL 3
+      ↓
+WAIT FOR RESULTS
+      ↓
+RESULT PUBLISHED
+      ↓
+VIEW SCORE + RANK
+```
+
+---
+
+# 86. COMPLETE ADMIN JOURNEY
+
+```text
+ADMIN LOGIN
+      ↓
+DASHBOARD
+      ↓
+SET EVENT SETTINGS
+      ↓
+SET REGISTRATION
+      ↓
+CUSTOMIZE WEBSITE
+      ↓
+CUSTOMIZE DESIGN
+      ↓
+CREATE LEVELS
+      ↓
+OPEN REGISTRATION
+      ↓
+MONITOR TEAMS
+      ↓
+REGISTRATION CLOSES
+      ↓
+EVENT DAY
+      ↓
+QR CHECK-IN
+      ↓
+START LEVEL 1
+      ↓
+END LEVEL 1
+      ↓
+ENTER SCORES
+      ↓
+START LEVEL 2
+      ↓
+END LEVEL 2
+      ↓
+ENTER SCORES
+      ↓
+START LEVEL 3
+      ↓
+END LEVEL 3
+      ↓
+ENTER SCORES
+      ↓
+AUTO TOTAL
+      ↓
+AUTO RANKING
+      ↓
+REVIEW
+      ↓
+PUBLISH RESULTS
+      ↓
+EXPORT DATA
+```
+
+---
+
+# 87. FINAL ADMIN SIDEBAR
+
+The final sidebar should be:
+
+```text
+🧠 MIND RIZZ ADMIN
+
+DASHBOARD
+  Overview
+
+WEBSITE
+  Home
+  About
+  Why Participate
+  How It Works
+  Rules
+
+DESIGN
+  Colors
+  Fonts
+  Buttons
+  Theme
+
+EVENT
+  Event Settings
+  Registration Settings
+
+TEAMS
+  All Teams
+  Search
+  Change Requests
+
+CHECK-IN
+  QR Scanner
+
+ATTENDANCE
+
+LEVELS
+  Level 1
+  Level 2
+  Level 3
+
+SCORES
+
+LEADERBOARD
+
+ANNOUNCEMENTS
+
+RESULTS
+
+EXPORT DATA
+
+────────────────
+Admin Profile
+Logout
+```
+
+---
+
+# 88. IMPORTANT: TWO DIFFERENT THEME SYSTEMS
+
+We should keep these completely separate.
+
+### Admin/Public Theme
+
+Admin controls:
+
+```text
+Design
+ ↓
+Theme
+ ↓
+Dark / Light
+```
+
+This changes the **official website**.
+
+### Student Theme
+
+Student controls:
+
+```text
+Student Dashboard
+ ↓
+Settings
+ ↓
+Appearance
+ ↓
+Dark / Light
+```
+
+This changes **only their personal dashboard**.
+
+---
+
+# 89. WHAT ADMIN CAN CHANGE WITHOUT CODE
+
+The goal should be:
+
+> **Almost everything visible on the website should be controlled from Admin Panel.**
+
+Admin can change:
+
+```text
+Logo
+Logo name
+Event name
+College name
+Tagline
+Hero text
+Hero image
+Countdown
+Event date
+Event time
+Venue
+Registration deadline
+Maximum teams
+About
+Objectives
+Why Participate
+Levels
+Level descriptions
+Level rules
+How It Works
+Rules
+Announcements
+Colors
+Fonts
+Buttons
+Theme
+Results visibility
+Leaderboard visibility
+```
+
+The developer should not need to open:
+
+```text
+page.tsx
+```
+
+just to change:
+
+```text
+MIND RIZZ
+```
+
+to another event name.
+
+---
+
+# 90. FINAL SYSTEM ARCHITECTURE
+
+```text
+                    MIND RIZZ
+                        │
+        ┌───────────────┴────────────────┐
+        │                                │
+        ▼                                ▼
+ PUBLIC WEBSITE                     AUTH SYSTEM
+        │                                │
+        │                     ┌──────────┴──────────┐
+        │                     │                     │
+        │                     ▼                     ▼
+        │                  STUDENT               ADMIN
+        │                     │                     │
+        │                     ▼                     ▼
+        │               STUDENT PANEL         ADMIN PANEL
+        │                     │                     │
+        │                     │                     ├── CMS
+        │                     │                     ├── Teams
+        │                     │                     ├── Check-in
+        │                     │                     ├── Levels
+        │                     │                     ├── Scores
+        │                     │                     ├── Ranking
+        │                     │                     ├── Announcements
+        │                     │                     └── Results
+        │                     │
+        └─────────────────────┼─────────────────────┘
+                              │
+                              ▼
+                       SUPABASE DATABASE
+                              │
+             ┌────────────────┼────────────────┐
+             │                │                │
+             ▼                ▼                ▼
+           Auth          PostgreSQL         Storage
+             │                │                │
+             │                │                └── Logo
+             │                │                    Images
+             │                │
+             │                ├── Profiles
+             │                ├── Teams
+             │                ├── Members
+             │                ├── Levels
+             │                ├── Scores
+             │                ├── Attendance
+             │                ├── Results
+             │                └── Content
+             │
+             ▼
+        SECURE RLS
+```
+
+## The key principle
+
+**Student side = participate in the event.**
+
+**Admin side = control the event and the entire website.**
+
+**Public side = view the event and register.**
+
+**Supabase = authentication + database + storage + security.**
+
+**Next.js = website + dashboards + admin panel.**
+
+**Vercel = deployment.**
+
+This gives you a complete **registration → team → QR → check-in → levels → scores → ranking → results** system, while the Admin Panel also works as a **full CMS for the website**.
