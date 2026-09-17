@@ -34,7 +34,7 @@ export function useApp() {
   const c = useContext(C);
 
   if (!c) {
-    throw Error('Provider missing');
+    throw new Error('Provider missing');
   }
 
   return c;
@@ -51,6 +51,16 @@ export function Provider({
   const [message, setMessage] = useState('');
   const busy = useRef(false);
 
+  /*
+   * Load the application state from Supabase.
+   *
+   * IMPORTANT:
+   * get_state() is available to both anonymous and
+   * authenticated users, so DO NOT require login here.
+   *
+   * This allows the public website to receive the
+   * configuration saved from the Admin Dashboard.
+   */
   const refresh = useCallback(async () => {
     if (!supabase) {
       setError('Supabase is not configured.');
@@ -58,29 +68,44 @@ export function Provider({
       return;
     }
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    try {
+      const { data, error: rpcError } =
+        await supabase.rpc('get_state');
 
-    if (!user) {
-      setState(emptyState);
+      if (rpcError) {
+        console.error('get_state error:', rpcError.message);
+        setError(rpcError.message);
+        setLoading(false);
+        return;
+      }
+
+      if (data) {
+        setState(data as State);
+      } else {
+        setState(emptyState);
+      }
+
+      setError('');
+    } catch (err) {
+      console.error('Refresh error:', err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to load application state.',
+      );
+    } finally {
       setLoading(false);
-      setError('');
-      return;
     }
-
-    const { data, error } = await supabase.rpc('get_state');
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setState(data as State);
-      setError('');
-    }
-
-    setLoading(false);
   }, []);
 
+  /*
+   * Initial load + automatic refresh.
+   *
+   * The 12-second refresh means changes made from the
+   * Admin Dashboard will automatically reach an already
+   * opened public page.
+   */
   useEffect(() => {
     void refresh();
 
@@ -106,8 +131,13 @@ export function Provider({
     };
   }, [refresh]);
 
+  /*
+   * Hide toast after 5 seconds.
+   */
   useEffect(() => {
-    if (!message) return;
+    if (!message) {
+      return;
+    }
 
     const timer = setTimeout(() => {
       setMessage('');
@@ -116,27 +146,44 @@ export function Provider({
     return () => clearTimeout(timer);
   }, [message]);
 
+  /*
+   * Logout.
+   */
   async function logout() {
-    if (!supabase) return;
+    if (!supabase) {
+      return;
+    }
 
     await supabase.auth.signOut();
 
-    setState(emptyState);
+    /*
+     * Refresh public state after logout instead of
+     * replacing it with emptyState.
+     *
+     * This is important because public configuration
+     * must remain visible after logout.
+     */
+    await refresh();
+
     setError('');
   }
 
+  /*
+   * Perform a Supabase mutation.
+   * Used by Admin Dashboard and other authenticated actions.
+   */
   async function act(
     action: string,
     payload: Payload = {},
   ) {
     if (busy.current) {
-      throw Error(
+      throw new Error(
         'Please wait for the previous change.',
       );
     }
 
     if (!supabase) {
-      throw Error('Supabase is not configured.');
+      throw new Error('Supabase is not configured.');
     }
 
     busy.current = true;
@@ -147,18 +194,23 @@ export function Provider({
       } = await supabase.auth.getUser();
 
       if (!user) {
-        throw Error('Please login first.');
+        throw new Error('Please login first.');
       }
 
-      const { error } = await supabase.rpc('mutate', {
-        action,
-        payload,
-      });
+      const { error: rpcError } =
+        await supabase.rpc('mutate', {
+          action,
+          payload,
+        });
 
-      if (error) {
-        throw Error(error.message);
+      if (rpcError) {
+        throw new Error(rpcError.message);
       }
 
+      /*
+       * Immediately reload the latest configuration
+       * after Admin saves it.
+       */
       await refresh();
 
       setMessage('Changes saved.');
@@ -167,8 +219,11 @@ export function Provider({
     }
   }
 
+  /*
+   * Demo mode has been removed.
+   */
   const enterDemo = () => {
-    throw Error(
+    throw new Error(
       'Demo mode has been removed. Please login with Supabase.',
     );
   };

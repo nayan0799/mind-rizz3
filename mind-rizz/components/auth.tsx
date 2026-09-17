@@ -1,3 +1,4 @@
+
 'use client';
 
 import {useState} from 'react';
@@ -28,6 +29,11 @@ export function Auth({
   const forgot=mode==='forgot-password';
   const reset=mode==='reset-password';
 
+  // Gmail validation
+  function isValidGmail(email:string) {
+    return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+  }
+
   async function submit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -45,25 +51,45 @@ export function Auth({
         throw Error('Supabase is not configured.');
       }
 
+      /*
+       * Gmail validation
+       *
+       * We only require Gmail when an email
+       * is actually being entered.
+       *
+       * Reset-password does not contain an email field,
+       * so it is excluded here.
+       */
+      if(!reset && !isValidGmail(currentEmail)) {
+        throw Error('Please enter a valid Gmail address.');
+      }
+
       if((signup||reset) && password!==String(f.get('confirm')||'')) {
         throw Error('Passwords do not match.');
       }
 
+      /*
+       * FORGOT PASSWORD
+       */
       if(forgot) {
         const {error}=await supabase.auth.resetPasswordForEmail(
           currentEmail,
           {
-            redirectTo:location.origin+'/student/reset-password'
+            redirectTo:
+              location.origin+'/student/reset-password'
           }
         );
 
         if(error) throw error;
 
         setSuccess(
-          'If the account exists, a password reset email has been sent.'
+          'If the Gmail account exists, a password reset email has been sent.'
         );
       }
 
+      /*
+       * RESET PASSWORD
+       */
       else if(reset) {
         const {error}=await supabase.auth.updateUser({
           password
@@ -78,6 +104,9 @@ export function Auth({
         },1200);
       }
 
+      /*
+       * SIGNUP
+       */
       else if(signup) {
         const name=String(f.get('name')||'').trim();
 
@@ -86,11 +115,15 @@ export function Auth({
         }
 
         if(!currentEmail) {
-          throw Error('Please enter your email address.');
+          throw Error('Please enter your Gmail address.');
         }
 
         if(!password) {
           throw Error('Please enter a password.');
+        }
+
+        if(password.length<8) {
+          throw Error('Password must be at least 8 characters.');
         }
 
         const {error,data}=await supabase.auth.signUp({
@@ -109,8 +142,8 @@ export function Auth({
 
         /*
          * If Supabase Email Confirmation is OFF,
-         * signup returns a session and the user can
-         * enter the dashboard immediately.
+         * signup returns a session and the user
+         * can enter the dashboard immediately.
          */
         if(data.session) {
           await refresh();
@@ -124,20 +157,23 @@ export function Auth({
 
         /*
          * If Email Confirmation is ON,
-         * Supabase can send an OTP/email verification.
+         * Supabase sends the verification email.
          */
         else {
           setOtpMode(true);
 
           setSuccess(
-            'A 6-digit verification code has been sent to your email.'
+            'A 6-digit verification code has been sent to your Gmail.'
           );
         }
       }
 
+      /*
+       * LOGIN
+       */
       else {
         if(!currentEmail) {
-          throw Error('Please enter your email address.');
+          throw Error('Please enter your Gmail address.');
         }
 
         if(!password) {
@@ -171,6 +207,9 @@ export function Auth({
     }
   }
 
+  /*
+   * VERIFY OTP
+   */
   async function verifyOtp() {
     if(otp.length!==6) {
       setError('Enter the 6-digit OTP.');
@@ -217,7 +256,15 @@ export function Auth({
     }
   }
 
+  /*
+   * RESEND OTP
+   */
   async function resendOtp() {
+    if(!email) {
+      setError('Email address is missing.');
+      return;
+    }
+
     setBusy(true);
     setError('');
     setSuccess('');
@@ -234,7 +281,9 @@ export function Auth({
 
       if(error) throw error;
 
-      setSuccess('A new OTP has been sent to your email.');
+      setSuccess(
+        'A new OTP has been sent to your Gmail.'
+      );
 
     } catch(err) {
       setError(
@@ -248,7 +297,12 @@ export function Auth({
   }
 
   return (
-    <main className={'auth-layout '+(admin?'admin-auth':'student-auth')}>
+    <main
+      className={
+        'auth-layout '+
+        (admin?'admin-auth':'student-auth')
+      }
+    >
 
       <div className="auth-story">
 
@@ -287,7 +341,9 @@ export function Auth({
         <div className="auth-card">
 
           <small className="eyebrow">
-            {admin ? 'ORGANIZER ACCESS' : 'STUDENT SPACE'}
+            {admin
+              ? 'ORGANIZER ACCESS'
+              : 'STUDENT SPACE'}
           </small>
 
           {otpMode ? (
@@ -336,13 +392,19 @@ export function Auth({
               </div>
 
               {error && (
-                <p className="alert" role="alert">
+                <p
+                  className="alert"
+                  role="alert"
+                >
                   {error}
                 </p>
               )}
 
               {success && (
-                <p className="success" role="status">
+                <p
+                  className="success"
+                  role="status"
+                >
                   {success}
                 </p>
               )}
@@ -353,7 +415,10 @@ export function Auth({
                 disabled={busy}
                 onClick={verifyOtp}
               >
-                {busy ? 'Verifying...' : 'Verify OTP'}
+                {busy
+                  ? 'Verifying...'
+                  : 'Verify OTP'}
+
                 <ArrowUpRight size={18}/>
               </button>
 
@@ -373,6 +438,7 @@ export function Auth({
                 onClick={()=>{
                   setOtpMode(false);
                   setOtp('');
+                  setEmail('');
                   setError('');
                   setSuccess('');
                 }}
@@ -402,9 +468,9 @@ export function Auth({
 
               <p>
                 {signup
-                  ? 'Create your account. Then verify your email with a one-time code.'
+                  ? 'Create your account with Gmail. Then verify your email with a one-time code.'
                   : forgot
-                    ? 'We will send you a secure reset link.'
+                    ? 'We will send you a secure reset link to your Gmail.'
                     : reset
                       ? 'Choose a new password for your account.'
                       : 'Your next challenge is right where you left it.'}
@@ -424,10 +490,11 @@ export function Auth({
 
                 {!reset && (
                   <Field
-                    label="Email address"
+                    label="Gmail address"
                     type="email"
                     name="email"
                     autoComplete="email"
+                    placeholder="example@gmail.com"
                     required
                   />
                 )}
@@ -459,13 +526,19 @@ export function Auth({
                 )}
 
                 {error && (
-                  <p className="alert" role="alert">
+                  <p
+                    className="alert"
+                    role="alert"
+                  >
                     {error}
                   </p>
                 )}
 
                 {success && (
-                  <p className="success" role="status">
+                  <p
+                    className="success"
+                    role="status"
+                  >
                     {success}
                   </p>
                 )}
